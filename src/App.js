@@ -1,35 +1,50 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
+import {
+  Route,
+  Routes,
+  BrowserRouter as Router,
+} from 'react-router-dom'
+import { eventWrapper } from '@testing-library/user-event/dist/utils'
+import Button from './shared/Button'
 
-/*const Cat = ({ cat: { name, temperament, description, weight, life_span, image }}) => {
+const Cat = ({ cat: { name, origin, temperament, description, weight, life_span, image }}) => {
 
   let url = image?.url
-  let imperialWeight = weight.imperial
-  const weightsFormat = []
-  
+  let imperialWeight = weight.imperial  
+
   return (
-    <></>
-    /*<div className='cat'>
-      <div className='cat_pic'>
-        {url && <img src={url} alt={name} width='300px' margin='10px'/>}
-      </div>
-      <h3 className='cat_name'>{name}</h3>
-      <div class='cat_info'>
-        <p>
-          <span>Temperament: </span>
-          {temperament} <br />
-          <span>Life Span: </span> 
-          {life_span} years <br />
-          <span>Weight: </span>
-          {imperialWeight} lbs <br />
-          <span>Description</span> <br />
-          {description}
-        </p>
-      </div>
-  </div>
+    <Router>
+
+      <div className='cat' style={catStyle}>
+        <div class='cat_info' style={infoStyle}>
+          <div className='cat_pic' style={{paddingBottom: '20px'}}>
+            {url && <img src={url} alt={name} width='100%'/>}
+          </div>
+
+            <h3 className='cat_name'>{name.toUpperCase()}</h3>
+            <strong>{origin}</strong>
+            <p>
+              <span style={spanStyle}>Temperament: </span>
+              {temperament} <br />
+              <span style={spanStyle}>Life Span: </span> 
+              {life_span} years <br />
+              <span style={spanStyle}>Weight: </span>
+              {imperialWeight} lbs <br />
+              <span style={spanStyle}>Description</span> <br />
+              {description}
+            </p>
+        </div>
+    </div>
+  </Router>
   )
-}*/
+}
+
+const spanStyle = {
+  color: 'grey',
+
+}
 
 const containerStyle = {
   heigh: '20%',
@@ -45,8 +60,28 @@ const containerStyle = {
   justifyContent: 'center',
 }
 
-const pStyle = {
-  
+const catsWrapper = {
+  padding: '20px',
+  margin: 'auto',
+  display: 'inline auto',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '60%',
+  margin: 'auto',
+}
+
+
+const catStyle = {
+  width: '90%',
+  alignItems: 'center',
+  margin: 'auto',
+  justifyContent: 'center',
+  marginBottom: '10px',
+  boxShadow: '2px 2px 5px grey'
+}
+
+const infoStyle = {
+  margin: 0,
 }
 
 const circleStyle = {
@@ -95,9 +130,27 @@ const getAverageOfSpan = (getProperty, data) => {
   return totalAvg.toFixed(2)
 }
 
+const showCats = (origin) => {
+
+}
+
+const createOrigins = (getProperty, data) => {
+  let origins=[]
+  let originList=[]
+  let cats = data.map((cat) => {
+    if(!origins.includes(cat.origin)){
+      origins.push(cat.origin)
+      originList.push(<Button text={cat.origin} style={{margin: '2px'}}onClick={showCats()}>{cat.origin}</Button>)
+    }
+  })
+  return originList
+  
+}
+
 class App extends Component {
   state = {
     data: [],
+    originList: [],
   }
 
   componentDidMount() {
@@ -126,7 +179,9 @@ class App extends Component {
     return getAverageOfSpan((cat) => cat.life_span, this.state.data)
   }
 
-  
+  getOriginList = () => {
+    return createOrigins((cat) => cat.origin, this.state.data)
+  }
   
   render() {  
     return (
@@ -134,13 +189,23 @@ class App extends Component {
         <div style={containerStyle}>
           <h2>30 Days Of React</h2>
           <strong>Cats Paradise</strong>
-          <p>There are {this.state.data.length} cat breeds</p>
-          <div className='cats-wrapper' style={container}>
-            <div style={{display: 'inline-flex', alignItems: 'center'}}>
-              On average, a cat can weigh about <div className='circle' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageWeight()}</div></div> lbs and live <div className='years' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageLife()}</div></div> years.
-            </div>
-          </div>
         </div>
+        <div className='catNav' style={catsWrapper}>
+          <Router>
+            {this.getOriginList()}
+          </Router>
+        </div>
+        <div className='cats-wrapper' style={catsWrapper}>
+            {this.state.data.map((cat) => (
+              <Cat key={cat.id} cat={cat} />
+            ))}
+        </div>
+        {/*<p>There are {this.state.data.length} cat breeds</p>
+        <div className='cats-wrapper' style={container}>
+          <div style={{display: 'inline-flex', alignItems: 'center'}}>
+            On average, a cat can weigh about <div className='circle' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageWeight()}</div></div> lbs and live <div className='years' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageLife()}</div></div> years.
+          </div>
+  </div>*/}
       </div>
     )
   }

@@ -2,9 +2,18 @@
 
 import React from 'react'
 
-const Button = ({ text, onClick, style }) => {
+const buttonStyles = {
+    padding: 10,
+    border: 'grey 2px',
+    margin: '3px auto',
+    cursor: 'pointer',
+    fontSize: 15,
+    color: 'black'
+  }  
+
+const Button = ({ text, onClick, }) => {
     return(
-        <button style={style} onClick={onClick}>
+        <button style={buttonStyles} onClick={onClick}>
             {text}
         </button>
     )
