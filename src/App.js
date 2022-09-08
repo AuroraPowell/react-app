@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
-import {
-  Route,
-  Routes,
-  BrowserRouter as Router,
-} from 'react-router-dom'
 import { eventWrapper } from '@testing-library/user-event/dist/utils'
 import Button from './shared/Button'
+import {
+  BrowserRouter as Router,
+  useParams,
+  Routes,
+  Route,
+  NavLink,
+} from 'react-router-dom'
 
 const Cat = ({ cat: { name, origin, temperament, description, weight, life_span, image }}) => {
 
@@ -15,8 +17,6 @@ const Cat = ({ cat: { name, origin, temperament, description, weight, life_span,
   let imperialWeight = weight.imperial  
 
   return (
-    <Router>
-
       <div className='cat' style={catStyle}>
         <div class='cat_info' style={infoStyle}>
           <div className='cat_pic' style={{paddingBottom: '20px'}}>
@@ -37,7 +37,6 @@ const Cat = ({ cat: { name, origin, temperament, description, weight, life_span,
             </p>
         </div>
     </div>
-  </Router>
   )
 }
 
@@ -130,19 +129,17 @@ const getAverageOfSpan = (getProperty, data) => {
   return totalAvg.toFixed(2)
 }
 
-const showCats = (origin) => {
-
-}
-
-const createOrigins = (getProperty, data) => {
+const createOrigins = (data) => {
   let origins=[]
   let originList=[]
+  
   let cats = data.map((cat) => {
     if(!origins.includes(cat.origin)){
       origins.push(cat.origin)
-      originList.push(<Button text={cat.origin} style={{margin: '2px'}}onClick={showCats()}>{cat.origin}</Button>)
+      originList.push(<NavLink to={cat.origin} style={{margin: '2px'}}>{cat.origin}</NavLink>)
     }
   })
+  originList.push(<NavLink to={''} style={{margin: '2px'}}>All</NavLink>)
   return originList
   
 }
@@ -150,7 +147,6 @@ const createOrigins = (getProperty, data) => {
 class App extends Component {
   state = {
     data: [],
-    originList: [],
   }
 
   componentDidMount() {
@@ -178,39 +174,49 @@ class App extends Component {
   getAverageLife = () => {
     return getAverageOfSpan((cat) => cat.life_span, this.state.data)
   }
-
-  getOriginList = () => {
-    return createOrigins((cat) => cat.origin, this.state.data)
-  }
+  
   
   render() {  
+
     return (
-      <div className='App'>
-        <div style={containerStyle}>
-          <h2>30 Days Of React</h2>
-          <strong>Cats Paradise</strong>
-        </div>
-        <div className='catNav' style={catsWrapper}>
-          <Router>
-            {this.getOriginList()}
-          </Router>
-        </div>
-        <div className='cats-wrapper' style={catsWrapper}>
-            {this.state.data.map((cat) => (
-              <Cat key={cat.id} cat={cat} />
-            ))}
-        </div>
-        {/*<p>There are {this.state.data.length} cat breeds</p>
-        <div className='cats-wrapper' style={container}>
-          <div style={{display: 'inline-flex', alignItems: 'center'}}>
-            On average, a cat can weigh about <div className='circle' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageWeight()}</div></div> lbs and live <div className='years' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageLife()}</div></div> years.
+      <Router>
+        <div className='App'>
+          <div style={containerStyle}>
+            <h2>30 Days Of React</h2>
+            <strong>Cats Paradise</strong>
           </div>
-  </div>*/}
-      </div>
+          <div className='catNav' style={catsWrapper}>
+              {createOrigins(this.state.data)}
+          </div>
+          <div className='cats-wrapper' style={catsWrapper}>
+              <Routes>
+                <Route index element={<CatList data={this.state.data}/>} />
+                <Route path="/:selectedOrigin" element={<CatList data={this.state.data}/>} />
+              </Routes>
+          </div>
+          {/*<p>There are {this.state.data.length} cat breeds</p>
+          <div className='cats-wrapper' style={container}>
+            <div style={{display: 'inline-flex', alignItems: 'center'}}>
+              On average, a cat can weigh about <div className='circle' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageWeight()}</div></div> lbs and live <div className='years' style={circleStyle}><div className='circleText' style={circleText}>{this.getAverageLife()}</div></div> years.
+            </div>
+    </div>*/}
+        </div>
+      </Router>
     )
   }
 }
 
+const CatList = ({ data }) => {
+  const { selectedOrigin } = useParams()
+
+  const doesCatmatchOrigin = cat => cat.origin === selectedOrigin
+
+  const selectedCats = data.filter(cat =>!selectedOrigin || doesCatmatchOrigin(cat))
+
+  return selectedCats.map((cat) => (
+    <Cat key={cat.id} cat={cat} />
+  ))
+}
 export default App
 
 {/*
