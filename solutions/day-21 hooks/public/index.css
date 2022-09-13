@@ -1,0 +1,193 @@
+/* == General style == */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    line-height: 1.5;
+    font-family: 'Montserrat';
+    font-weight: 300;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+.root {
+    min-height: 100%;
+    position: relative;
+}
+
+.header-wrapper,
+.main-wrapper,
+.footer-wrapper {
+    width: 85%;
+    margin: auto;
+    
+}
+
+.header-wrapper,
+.main-wrapper {
+    padding: 10px;
+    margin: 2px auto;
+}
+
+.subscribe-box{
+  background-color: #99dff0;
+  border-radius: 25px;
+  margin: auto;
+  margin-top: 20px;
+  width: 80%;
+  font-family: 'Roboto';
+  
+}
+
+.subscribe{
+  margin: auto;
+  text-align: center;
+  padding: 10px;
+}
+
+.subscribe h1{
+  line-height: 1.5;
+  font-size: 25px;
+  font-weight: 400;
+  padding: 15px;
+}
+
+.subscribe p{
+  padding: 20px;
+  font-weight: 400;
+}
+
+.subscribe button{
+  background-color: #ee6e60;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  width: 30%;
+  margin: 20px;
+  transition-duration: .4s;
+}
+
+.subscribe button:hover{
+  color: #ee6e60;
+  background-color: white;
+  border: 2px solid #ee6e60;  
+}
+
+.subscribe input{
+  color: #929292;
+  border-radius: 10px;
+  border: none;
+  text-align: left;
+  padding: 15px;
+  margin: 10px;
+  height: 40px;
+  outline: none;
+}
+
+.user-card{
+  font-family: 'Roboto';
+  font-weight: 500;
+  margin: 10px;
+  border: 2px solid #e9e4e3;
+  border-radius: 25px;
+  padding: 20px
+}
+
+.user-card img{
+  border-radius: 50%;
+}
+
+.user-card h2{
+  padding: 2px;
+}
+
+.user-card p{
+  padding: 5px;
+}
+
+.skillList{
+  padding: 5px;
+  width: 80%;
+}
+
+.user-card li{
+  display: inline;
+  background-color: #0191ff;
+  color: white;
+  margin: 5px;
+  border-radius: 10px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.hex {
+  height: 50px;
+  text-align: center;
+  padding-top: 10px;
+  color: white;
+  font-weight: 800;
+  margin: 4px;
+  border-radius: 10px;
+}
+
+
+h1 {
+    font-size: 70px;
+    font-weight: 300;
+}
+
+h2,
+h3 {
+    font-weight: 300;
+}
+
+header {
+    background-color: #61dbfb;
+    padding: 10px;
+}
+
+main {
+    padding: 10px;
+    padding-bottom: 60px;
+}
+
+ul {
+    margin-left: 15px;
+}
+
+ul li {
+    list-style: none;
+}
+
+footer {
+    position: absolute;
+    float: bottom;
+    width: 100%;
+    height: 75px;
+    /* Height of footer */
+    background: #6cf;
+}
+
+.user-info {
+    float:right;
+    width: 30%;
+    padding: 2px;
+}
+
+.footer-wrapper {
+    font-weight: 400;
+    text-align: center;
+    line-height: 60px;
+}
