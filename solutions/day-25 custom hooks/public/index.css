@@ -1,0 +1,115 @@
+/* == General style == */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+    line-height: 1.5;
+    font-family: 'Montserrat';
+    font-weight: 300;
+    color: black;
+    margin: 0;
+    padding: 15px;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+.root {
+    min-height: 100%;
+    position: relative;
+}
+
+
+.subscribe button{
+  background-color: #ee6e60;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  height: 40px;
+  width: 30%;
+  margin: 20px;
+  transition-duration: .4s;
+}
+
+.subscribe button:hover{
+  color: #ee6e60;
+  background-color: white;
+  border: 2px solid #ee6e60;  
+}
+
+.headerInput{
+  margin: auto;
+  text-align: center;
+}
+
+.countries-wrapper {
+  background-color: rgba(94, 94, 94, 0.07);
+  text-align: center;
+}
+
+.countries-wrapper li:hover{
+  transform: scale(1.05);
+  box-shadow: 0px 0px 5px 5px rgb(165, 165, 165);
+  transition: 0.3s;
+}
+
+.country-flag img{
+  border-radius: 5px;
+  width: 55%;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 20px;
+  box-shadow: 0px 0px 2px 2px rgb(173, 173, 173)
+}
+
+.country{
+  padding-left: 30px;
+  border:rgb(131, 131, 131)
+}
+.country_name{
+  text-align: center;
+  margin: auto;
+}
+.country_text {
+  text-align: left;
+}
+.country_text h2{
+  color: gray;
+}
+
+input{
+  width: 55%;
+  height: 40%;
+  font-size: 30px;
+  border-radius: 50px;
+  padding: 20px;
+  color: gray;
+  padding-left: 5%;
+}
+
+h1{
+  font-size: 65px;
+  color: orange;
+}
+
+h2{
+  color: #24232cd1;
+}
+
+ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  grid-auto-rows: 1fr;
+}
+
+span{
+  color: #24232cd1;
+}

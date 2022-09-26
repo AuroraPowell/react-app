@@ -1,153 +1,190 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import ReactDOM, { findDOMNode } from "react-dom";
+// useRef lessons
 
-let searchList = [];
+import React, { useRef } from "react";
+import ReactDOM from "react-dom";
+import Hexacolor from "./utils/generate-color";
 
-const Country = ({
-  country: { name, flags, population, languages, currencies, capital },
-}) => {
-  const languageOrLanguages = languages.length > 1 ? "Languages" : "Language";
-  const formatLanguages = languages.map(({ name }) => name).join(", ");
+const buttonStyles = {
+  padding: "15px 35px",
+  fontSize: 20,
+  border: "none",
+  borderRadius: "4px",
+  outline: "none",
+  margin: "30px",
+  cursor: "pointer",
+
+  backgroundColor: "#69cdbf",
+  color: "white",
+  fontFamily: "Aldrich",
+};
+
+const generatorRowStyles = {
+  width: "80%",
+  margin: "auto",
+  justifyContent: "space-between",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+};
+
+const Button = ({ text, onClick }) => {
   return (
-    <div className="country">
-      <div className="country-flag">
-        <img src={flags.png} alt={name} />
-      </div>
-      <h2 className="country_name" style={{ color: "orange" }}>
-        {name.toUpperCase()}
-      </h2>
-      <br />
-      <div class="country_text">
-        <h2>
-          <span>
-            <strong>Capital: </strong>
-          </span>
-          {capital}
-        </h2>
-        <h2>
-          <span>
-            <strong>{languageOrLanguages}: </strong>
-          </span>
-          {formatLanguages}
-        </h2>
-        <h2>
-          <span>
-            <strong>Population: </strong>
-          </span>
-          {population}
-        </h2>
-        <h2>
-          <span>
-            <strong>Currency: </strong>
-          </span>
-          {currencies?.name}
-        </h2>
-      </div>
-    </div>
+    <button style={buttonStyles} onClick={onClick}>
+      {text}
+    </button>
   );
+};
+
+const SingleColor = () => {
+  return <Hexacolor />;
 };
 
 const App = (props) => {
-  const initialState = {
-    searchField: "",
+  const ref = useRef(null);
+  const copyColor = () => {
+    let content = ref.current.textContent;
+    alert(content);
+    console.log(content);
   };
-  // setting initial state and method to update state
-  const [data, setData] = useState([]);
-  const [formData, setFormData] = useState(initialState);
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // inclusion of second parameter, empty [], runs only on first render
-  // when array is empty. if array is [prop, state], then ran any time
-  // 'dependency' value changes - props and state would be passed as 'dependencies'
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const url = "https://restcountries.com/v2/all";
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const { searchField } = formData;
 
   return (
     <div className="App">
-      <div className="headerInput">
-        <h1>
-          <strong>World Countries Data</strong>
+      <div className="Header" style={{ textAlign: "center", margin: "auto" }}>
+        <h1 ref={ref}>
+          <strong>30 Days of React</strong>
         </h1>
-        <br />
-        <div>
-          <h2>
-            <strong>Currently, we have {data.length} countries</strong>
-          </h2>
-          <br />
-          {searchField && (
-            <h2 style={{ color: "orange" }}>
-              <em>{searchList.length} satisfied the search criteria</em>
-            </h2>
-          )}
-          <h1>
-            <input
-              type="text"
-              id="searchField"
-              name="searchField"
-              value={searchField}
-              placeholder="Search countries by name, capital city, or languages "
-              onChange={onChange}
-            />
-          </h1>
-          <br />
-          <br />
+        <h2>Hexadecimal Numbers</h2>
+      </div>
+      <div className="color-generator-row" style={generatorRowStyles}>
+        <div
+          className="form-group"
+          style={{
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <input style={{ width: "100%" }} type="text" placeholder="wow" />
         </div>
+        <Button
+          className="generate-color-btn"
+          onClick={copyColor}
+          text="GENERATE"
+        />
       </div>
-      <div className="countries-wrapper">
-        <ul>
-          {/*{data.map((country) => (
-            <li key={country.name.common}>
-              <Country country={country} />
-            </li>
-          ))}
-          */}
-          <CountryList data={data} searchField={searchField} />
-        </ul>
+      <div
+        className="colors-wrapper"
+        style={{
+          width: "80%",
+          margin: "auto",
+          padding: 0,
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
+      >
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
+        <SingleColor />
       </div>
+      {/*<button onClick={copyColor}>📋</button>*/}
     </div>
   );
 };
+// Getting info from form using useRef
+/*
+const App = (props) => {
+  const ref = useRef(null)
+  const onClick = () => {
+    let value = ref.current.value
+    alert(value)
+  }
 
-const CountryList = ({ data, searchField }) => {
-  let updatedSearch = searchField.toUpperCase();
-  let matchesSearch = (thing) =>
-    thing && thing.toUpperCase().includes(updatedSearch);
+  return (
+    <div className='App'>
+      <h1>How to use data from uncontrolled  input using useRef</h1>
+      <input type='text' ref={ref} />
+      <br />
+      <button onClick={onClick}>Get Input Data</button>
+    </div>
+  )
+}
+*/
 
-  const doesCountrySatisfySearch = (country) =>
-    matchesSearch(country.name) ||
-    country.languages.some((language) => matchesSearch(language.name)) ||
-    matchesSearch(country?.capital);
+// shifting focus to input using useRef (onClick)
+/*const App = (props) => {
 
-  const searchedCountries = data.filter(
-    (country) => !searchField || doesCountrySatisfySearch(country)
-  );
+  const ref = useRef(null)
+  const onClick = () => {
+    ref.current.focus()
+  }
 
-  searchList = searchedCountries;
-  console.log(searchList);
-  return searchedCountries.map((country) => (
-    <li key={country.name}>
-      <Country key={country.name} country={country} />
-    </li>
-  ));
-};
+  return (
+    <div className='App'>
+      <h1>How to focus on input element useRef</h1>
+      <input type='text' ref={ref} />
+      <br />
+      <button onClick={onClick}>Click to Focus on input</button>
+    </div>
+  )
+}*/
+
+// Getting content from DOM tree (content of another element)
+/*const App = (props) => {
+  const ref = useRef(null)
+  const onClick = () => {
+    let content = ref.current.textContent
+    alert(content)
+    console.log(content)
+  }
+
+  return(
+    <div className='App'>
+      <h1 ref={ref}>How to get content from DOM tree</h1>
+      <button onClick={onClick}>Getting content</button>
+    </div>
+  )
+}*/
+
+// Accessing and Styling a DOM element ((YESSSSS))
+/*const App = (props) => {
+  const ref = useRef(null)
+  const onClick = () => {
+    ref.current.style.backgroundColor = '#61dbfb' 
+    
+    ref.current.style.padding = '50px'
+    ref.current.style.textAlign = 'center'
+  }
+
+  return (
+    <div className='App'>
+      <h1 ref={ref}>How to style HTML from the DOM tree using useRef</h1>
+      <button onClick={onClick}>Style it</button>
+    </div>
+  )
+}*/
 
 export default App;
