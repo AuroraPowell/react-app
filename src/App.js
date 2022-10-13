@@ -137,8 +137,116 @@ const App = (props) => {
 /*const App = (props) => {
 
   const ref = useRef(null)
+<<<<<<< Updated upstream
   const onClick = () => {
     ref.current.focus()
+=======
+  const [editing, toggleEditing] = useState(false)
+
+  const editPost = () => {
+    toggleEditing(true)
+  }
+
+  // NEED to handle onChange
+  const onChange = (e) => {
+    //wowiezowie yall
+  }
+
+  const handleSave = () => {
+    let text = ref.current.value
+    posts.editPost(text, id)
+    console.log('new text: ')
+    console.log(text)
+    toggleEditing(false)
+  }
+  const cancelEdit = () => {
+    toggleEditing(false)
+  }
+
+  const renderEditBox = (
+    <div className="editContainer">
+        <textarea
+          ref={ref}
+          placeholder={post}
+          value={post}
+          cols="90"
+          rows="3"
+          onChange={onChange}
+        />
+        <div>
+          <button className="saveButton">Save</button>
+          <button className="cancleButton" onClick={cancelEdit}>Cancel</button>
+        </div>
+    </div>
+  )
+
+  const renderPost = (
+    <IconContext.Provider value={{ className: "shared-class", size: 25 }}>
+      <div className="post-container">
+        <div className="post-user-info">
+          <FaUser className="faUser" />
+          <h4>
+            {user} <span>@{firstName}</span>
+          </h4>
+        </div>
+
+        <p className="post-text">{post}</p>
+
+        <div className="post-interact-bar">
+          <div className="edit-delete">
+            <button onClick={editPost}>
+              <FaRegEdit className="faEdit" />
+            </button>
+            <button>
+              <FiTrash2 className="faEdit" />
+            </button>
+          </div>
+          <div className="user-engagement">
+            <button>
+              <FaRegComment className="faComment" />
+            </button>
+            <button>
+              <FaRetweet className="faRetweet" size={28} />
+            </button>
+            <button>
+              <FaRegHeart className="faHeart" />
+            </button>
+          </div>
+          <div className="post-time">
+            <p>time</p>
+          </div>
+        </div>
+      </div>
+    </IconContext.Provider>
+  )
+  
+  return editing ? renderEditBox : renderPost
+//   if(editing) {
+//     return renderEditBox
+//   }
+//  return (
+    
+//   );
+};
+
+{/*const EditPost = ({ targetPost: {post, editing,} }) => {
+
+  let uneditedText = targetPost.post
+
+  const onChange = (e) => {
+    targetPost.setParams({ editing: true, post: e.target.value })
+  }
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    targetPost.setParams({ post: ref.current.value, editing: false })
+    console.log("Edited tweet object: ");
+    console.log(targetPost);
+  };
+
+  const handleCancel = (e) => {
+    setParams({ post: uneditedText, editing: false })
+>>>>>>> Stashed changes
   }
 
   return (
