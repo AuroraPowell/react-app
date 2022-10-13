@@ -1,146 +1,118 @@
 // useRef lessons
+// ICON IS GONNA BE BEAD LIZARD. THANKS SHEP
+import React, { useRef, useState } from "react";
+import "./styles/newtWitter.scss";
+import { IconContext } from "react-icons";
+import {
+  FaUser,
+  FaRegComment,
+  FaRegHeart,
+  FaRetweet,
+  FaRegEdit,
+} from "react-icons/fa";
+import { FiTrash2 } from "react-icons/fi";
 
-import React, { useRef, useState, useCallback } from "react";
-import ReactDOM from "react-dom";
-import Hexacolor from "./utils/generate-color";
-
-const buttonStyles = {
-  padding: "15px 35px",
-  fontSize: 20,
-  border: "none",
-  borderRadius: "4px",
-  outline: "none",
-  margin: "30px 5px 5px 10px",
-  cursor: "pointer",
-
-  backgroundColor: "#69cdbf",
-  color: "white",
-  fontFamily: "Aldrich",
+const randomId = () => {
+  const numbersLetters =
+    "0123456789abcdefghijklmnopqrstuvwzyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  let randId = "";
+  let randIndex;
+  for (let i = 0; i < 6; i++) {
+    randIndex = Math.floor(Math.random() * numbersLetters.length);
+    randId += numbersLetters[randIndex];
+  }
+  return randId;
 };
 
-const generatorRowStyles = {
-  width: "80%",
-  margin: "auto",
-  justifyContent: "space-between",
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-};
+const recentPosts = [
+  {
+    id: randomId(),
+    date: new Date(),
+    user: "Asabeneh Yetayeh",
+    post: "30 Days Of React challenge has been started on 1 October and still ongoing. It will end the 30 October 2020. It was a real challenge for everyone. Students learned quite a lot of concepts. I hope this will help lots of students. ",
+    postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+  },
+  {
+    id: randomId(),
+    date: new Date(),
+    user: "Asabeneh Yetayeh",
+    post: "30 Days Of JavaScript challenge has been started on 1 January and ended on 30 January 2020. It is of the best JavaScript material on the internet. Students learned quite a lot of concepts. I hope this will help lots of students. JavaScript for Ever! ",
+    postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+  },
+  {
+    id: randomId(),
+    date: new Date(),
+    user: "Asabeneh Yetayeh",
+    post: "30 Days Of Python challenge has been started on 22 November 2019  and ended on 22 December 2020. It is of the best references for Pythonistas, data scientists and aspiring ML. Students learned quite a lot of concepts. I hope this will help lots of students. Python is for best friend",
+    postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+  },
+  {
+    id: randomId(),
+    date: new Date(),
+    user: "Asabeneh Yetayeh",
+    post: "30 Days Of Python challenge has been started on 22 November 2019  and ended on 22 December 2020. It is of the best references for Pythonistas, data scientists, and aspiring ML. Students learned quite a lot of concepts. Python is eating the world.",
+    postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+  },
+  {
+    id: randomId(),
+    date: new Date(),
+    user: "Asabeneh Yetayeh",
+    post: "I have no idea about the coming challenge. It could be 30 days of HTML &  CSS, ReactNative, Data Analysis or MERN. ",
+    postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+  },
+];
 
-const Button = ({ text, onClick }) => {
-  return (
-    <button style={buttonStyles} onClick={onClick}>
-      {text}
-    </button>
-  );
-};
-
-const SingleColor = () => {
-  return <Hexacolor />;
-};
-
-const App = (props) => {
+const NewTweet = (posts) => {
   const ref = useRef(null);
-  const [seed, setSeed] = useState(1);
+  const [tweet, setTweet] = useState("");
 
-  const generate = () => {
-    setSeed(Math.random());
+  const onChange = (e) => {
+    setTweet(e.target.value);
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    let tweetToSend = ref.current.value;
+    posts.addPost(tweetToSend);
+    setTweet("");
+    //console.log("Sent tweet: " + tweetToSend);
+  };
+
+  let wordCount = 250 - tweet.length;
+  let buttonStatus = wordCount < 250 && wordCount > 0;
+
+  let buttonClass = buttonStatus ? "activeButton" : "disabledButton";
+
   return (
-    <div className="App">
-      <div className="Header" style={{ textAlign: "center", margin: "auto" }}>
-        <h1>
-          <strong>30 Days of React</strong>
-        </h1>
-        <h2>Hexadecimal Numbers</h2>
-      </div>
-      <div className="color-generator-row" style={generatorRowStyles}>
-        <div
-          className="form-group"
-          style={{
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <input style={{ width: "100%" }} type="text" placeholder="wow" />
+    <div>
+      <form onSubmit={onSubmit}>
+        <div className="new-post-text">
+          <textarea
+            ref={ref}
+            placeholder="Write new tweet"
+            value={tweet}
+            cols="90"
+            rows="3"
+            onChange={onChange}
+          />
+          <p>{wordCount}</p>
         </div>
-        <Button
-          className="generate-color-btn"
-          onClick={generate}
-          text="GENERATE"
-        />
-      </div>
-      <div
-        className="colors-wrapper"
-        style={{
-          width: "80%",
-          margin: "auto",
-          padding: 0,
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
-        }}
-      >
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-        <SingleColor />
-      </div>
+        <div className="send-tweet">
+          <button className={buttonClass} disabled={!buttonStatus}>
+            Add Post
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
-// Getting info from form using useRef
-/*
-const App = (props) => {
-  const ref = useRef(null)
-  const onClick = () => {
-    let value = ref.current.value
-    alert(value)
-  }
 
-  return (
-    <div className='App'>
-      <h1>How to use data from uncontrolled  input using useRef</h1>
-      <input type='text' ref={ref} />
-      <br />
-      <button onClick={onClick}>Get Input Data</button>
-    </div>
-  )
-}
-*/
 
-// shifting focus to input using useRef (onClick)
-/*const App = (props) => {
+const Post = ({ post: { id, date, user, post, postInfo } }) => {
+  
+  let firstName = user.split(" ")[0];
 
   const ref = useRef(null)
-<<<<<<< Updated upstream
-  const onClick = () => {
-    ref.current.focus()
-=======
   const [editing, toggleEditing] = useState(false)
 
   const editPost = () => {
@@ -149,7 +121,7 @@ const App = (props) => {
 
   // NEED to handle onChange
   const onChange = (e) => {
-    //wowiezowie yall
+    //wow
   }
 
   const handleSave = () => {
@@ -246,52 +218,83 @@ const App = (props) => {
 
   const handleCancel = (e) => {
     setParams({ post: uneditedText, editing: false })
->>>>>>> Stashed changes
   }
 
   return (
-    <div className='App'>
-      <h1>How to focus on input element useRef</h1>
-      <input type='text' ref={ref} />
-      <br />
-      <button onClick={onClick}>Click to Focus on input</button>
-    </div>
-  )
-}*/
+      <div className="editContainer">
+        <textarea
+          ref={ref}
+          placeholder="Edit tweet"
+          value={tweet}
+          cols="90"
+          rows="3"
+          onChange={onChange}
+        />
+        <div>
+          <button className="saveButton" onClick={handleSave}>Save</button>
+          <button className="cancleButton">Cancel</button>
+        </div>
+      </div>
+  ) 
+};
+*/}
 
-// Getting content from DOM tree (content of another element)
-/*const App = (props) => {
-  const ref = useRef(null)
-  const onClick = () => {
-    let content = ref.current.textContent
-    alert(content)
-    console.log(content)
+const App = () => {
+  const [posts, setPosts] = useState(recentPosts);
+
+  const handleTime = (rawDate) => {
+
+    const month = months[rawDate.getMonth()].slice(0,3)
+    const year = rawDate.getFullYear()
+    const date = rawDate.getDate()
+    console.log(date)
+    return ` ${month} ${date}, ${year}`
   }
+  const addPost = (text) => {
+    let id = randomId();
+    let rawDate = handleTime(new Date());
 
-  return(
-    <div className='App'>
-      <h1 ref={ref}>How to get content from DOM tree</h1>
-      <button onClick={onClick}>Getting content</button>
-    </div>
-  )
-}*/
+    let newPost = {
+      id,
+      date,
+      post: text,
+      user: "Anonymous User",
+      postInfo: [{ comment: 0 }, { repost: 0 }, { hearts: 0 }],
+      editing: false,
+    };
+  
 
-// Accessing and Styling a DOM element ((YESSSSS))
-/*const App = (props) => {
-  const ref = useRef(null)
-  const onClick = () => {
-    ref.current.style.backgroundColor = '#61dbfb' 
+    if (text.length) {
+      setPosts((arr) => [...arr, newPost]);
+    }
     
-    ref.current.style.padding = '50px'
-    ref.current.style.textAlign = 'center'
+  };
+  // console.log("Logging all posts to console: ");
+  // console.log(posts);
+
+  const editPost = () => {
+    setPosts({ editing: true })
   }
 
+  const removePost = () => {};
+
+  const eachPost = () => {
+    // check 'editing' in order to render different element, <-,
+    //  '-> allowing user to access newTweet in different format, overriding 'text'
+
+    return posts.map((post) => {
+      return <Post key={post.id} post={post} editPost={editPost} /> 
+    });
+  };
+
   return (
-    <div className='App'>
-      <h1 ref={ref}>How to style HTML from the DOM tree using useRef</h1>
-      <button onClick={onClick}>Style it</button>
+    <div className="app-container">
+      <div className="new-tweet">
+        <NewTweet addPost={addPost} />
+      </div>
+      <div className="post-feed">{eachPost()}</div>
     </div>
-  )
-}*/
+  );
+};
 
 export default App;
